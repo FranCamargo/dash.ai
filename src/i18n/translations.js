@@ -16,7 +16,7 @@ export const translations = {
     'sidebar.minimize': 'Minimizar',
 
     'login.welcome': 'Bem-vindo ao',
-    'login.assistant': 'Assistente',
+    'login.assistant': 'Chat.AI',
     'login.subtitle': 'Entre com suas credenciais para continuar',
     'login.namePlaceholder': 'Seu nome',
     'login.passwordPlaceholder': 'Senha',
