@@ -1,0 +1,187 @@
+:root {
+  --text: #9ca3af;
+  --text-h: #f3f4f6;
+  --bg: #16171d;
+  --border: #2e303a;
+  --code-bg: #1f2028;
+  --accent: #aa182f;
+  --accent-bg: rgba(170, 24, 47, 0.15);
+  --accent-border: rgba(170, 24, 47, 0.5);
+  --social-bg: rgba(47, 48, 58, 0.5);
+  --shadow:
+    rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+  --body-bg: #202020;
+
+  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+
+  font: 16px/145% var(--sans);
+  letter-spacing: 0.18px;
+  color: var(--text);
+  background: var(--body-bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Red Night (default) ── */
+[data-theme="red-night"] {
+  --text: #9ca3af;
+  --text-h: #f3f4f6;
+  --bg: #16171d;
+  --border: #2e303a;
+  --code-bg: #1f2028;
+  --accent: #aa182f;
+  --accent-bg: rgba(170, 24, 47, 0.15);
+  --accent-border: rgba(170, 24, 47, 0.5);
+  --social-bg: rgba(47, 48, 58, 0.5);
+  --shadow: rgba(0,0,0,0.4) 0 10px 15px -3px, rgba(0,0,0,0.25) 0 4px 6px -2px;
+  --body-bg: #202020;
+}
+
+/* ── Owl ── */
+[data-theme="owl"] {
+  --text: #c4aad6;
+  --text-h: #f0eaf8;
+  --bg: #1a0f26;
+  --border: #3a2055;
+  --code-bg: #240e38;
+  --accent: #9d55c5;
+  --accent-bg: rgba(92, 42, 112, 0.2);
+  --accent-border: rgba(157, 85, 197, 0.5);
+  --social-bg: rgba(50, 25, 75, 0.5);
+  --shadow: rgba(0,0,0,0.4) 0 10px 15px -3px, rgba(0,0,0,0.25) 0 4px 6px -2px;
+  --body-bg: #1a0f26;
+}
+
+/* ── Ocean ── */
+[data-theme="ocean"] {
+  --text: #3d5a6e;
+  --text-h: #0a2a3a;
+  --bg: #e8e8e8;
+  --border: #c8d4db;
+  --code-bg: #dde8ef;
+  --accent: #0a69a1;
+  --accent-bg: rgba(10, 105, 161, 0.1);
+  --accent-border: rgba(10, 105, 161, 0.5);
+  --social-bg: rgba(200, 220, 235, 0.5);
+  --shadow: rgba(0,0,0,0.1) 0 10px 15px -3px, rgba(0,0,0,0.05) 0 4px 6px -2px;
+  --body-bg: #e8e8e8;
+}
+
+/* ── Cozy Green ── */
+[data-theme="cozy-green"] {
+  --text: #4a6050;
+  --text-h: #1a3020;
+  --bg: #e5ece6;
+  --border: #c0d0c4;
+  --code-bg: #d5e3d8;
+  --accent: #7e9e80;
+  --accent-bg: rgba(126, 158, 128, 0.1);
+  --accent-border: rgba(126, 158, 128, 0.5);
+  --social-bg: rgba(190, 215, 194, 0.5);
+  --shadow: rgba(0,0,0,0.1) 0 10px 15px -3px, rgba(0,0,0,0.05) 0 4px 6px -2px;
+  --body-bg: #e5ece6;
+}
+
+/* ── Ocean Dark ── */
+[data-theme="ocean-dark"] {
+  --text: #8fb8cc;
+  --text-h: #c8e4f0;
+  --bg: #0d1b2a;
+  --border: #1a3040;
+  --code-bg: #162535;
+  --accent: #2196c4;
+  --accent-bg: rgba(33, 150, 196, 0.15);
+  --accent-border: rgba(33, 150, 196, 0.5);
+  --social-bg: rgba(26, 58, 80, 0.5);
+  --shadow: rgba(0,0,0,0.4) 0 10px 15px -3px, rgba(0,0,0,0.25) 0 4px 6px -2px;
+  --body-bg: #0d1b2a;
+}
+
+/* ── Cozy Green Dark ── */
+[data-theme="cozy-green-dark"] {
+  --text: #9ca49c;
+  --text-h: #e2e6e2;
+  --bg: #141c16;
+  --border: #253328;
+  --code-bg: #1a2a1d;
+  --accent: #6ab870;
+  --accent-bg: rgba(106, 184, 112, 0.15);
+  --accent-border: rgba(106, 184, 112, 0.5);
+  --social-bg: rgba(37, 60, 42, 0.5);
+  --shadow: rgba(0,0,0,0.4) 0 10px 15px -3px, rgba(0,0,0,0.25) 0 4px 6px -2px;
+  --body-bg: #141c16;
+}
+
+[data-theme="red-night"] #social .button-icon,
+[data-theme="owl"] #social .button-icon,
+[data-theme="ocean-dark"] #social .button-icon,
+[data-theme="cozy-green-dark"] #social .button-icon {
+  filter: invert(1) brightness(2);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--body-bg);
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+h1,
+h2 {
+  font-family: var(--heading);
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+h1 {
+  font-size: 56px;
+  letter-spacing: -1.68px;
+  margin: 32px 0;
+  @media (max-width: 1024px) {
+    font-size: 36px;
+    margin: 20px 0;
+  }
+}
+h2 {
+  font-size: 24px;
+  line-height: 118%;
+  letter-spacing: -0.24px;
+  margin: 0 0 8px;
+  @media (max-width: 1024px) {
+    font-size: 20px;
+  }
+}
+p {
+  margin: 0;
+}
+
+code,
+.counter {
+  font-family: var(--mono);
+  display: inline-flex;
+  border-radius: 4px;
+  color: var(--text-h);
+}
+
+code {
+  font-size: 15px;
+  line-height: 135%;
+  padding: 4px 8px;
+  background: var(--code-bg);
+}
