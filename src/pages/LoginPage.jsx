@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useLanguage } from '../i18n/LanguageContext'
+import Footer from '../components/Footer'
 
 const IconBot = () => (
   <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -271,6 +272,7 @@ export default function LoginPage({ onLogin }) {
           <ForgotForm onBack={() => setView('login')} />
         )}
       </div>
+      <Footer />
     </div>
   )
 }

@@ -3,6 +3,7 @@ import { useLanguage } from '../i18n/LanguageContext'
 import Sidebar from '../components/sidebar'
 import TopBar from '../components/TopBar'
 import FeedbackList from '../components/FeedbackList'
+import Footer from '../components/Footer'
 
 // Maps every possible first-message (all languages) to an action id
 const CONTENT_TO_ACTION = {
@@ -344,6 +345,7 @@ export default function CuradoriaPage({ user, onLogout, isAdmin, history, active
             </>
           )}
         </div>
+        <Footer />
       </main>
     </div>
   )

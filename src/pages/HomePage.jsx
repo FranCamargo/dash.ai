@@ -5,6 +5,7 @@ import Greeting from '../components/Greeting'
 import SearchBar from '../components/SearchBar'
 import QuickActions from '../components/QuickActions'
 import ModelSelector from '../components/ModelSelector'
+import Footer from '../components/Footer'
 
 export default function HomePage({ user, onLogout, isAdmin, history, activeConvId, onLoadConversation, onGoHome, onOpenCuradoria, currentView, onStart, selectedModel, onModelChange }) {
   const { t } = useLanguage()
@@ -34,6 +35,7 @@ export default function HomePage({ user, onLogout, isAdmin, history, activeConvI
           </div>
         </section>
         <QuickActions onActionSelect={handleActionSelect} />
+        <Footer />
       </main>
     </div>
   )

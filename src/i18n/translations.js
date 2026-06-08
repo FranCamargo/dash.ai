@@ -134,6 +134,8 @@ export const translations = {
     'feedback.confirmMessage': 'Esta ação não pode ser desfeita.',
     'feedback.confirmCancel': 'Cancelar',
     'feedback.confirmOk': 'Remover',
+
+    'footer.createdBy': 'Criado por',
   },
 
   'en': {
@@ -271,6 +273,8 @@ export const translations = {
     'feedback.confirmMessage': 'This action cannot be undone.',
     'feedback.confirmCancel': 'Cancel',
     'feedback.confirmOk': 'Remove',
+
+    'footer.createdBy': 'Created by',
   },
 
   'es': {
@@ -408,5 +412,7 @@ export const translations = {
     'feedback.confirmMessage': 'Esta acción no se puede deshacer.',
     'feedback.confirmCancel': 'Cancelar',
     'feedback.confirmOk': 'Eliminar',
+
+    'footer.createdBy': 'Creado por',
   },
 }

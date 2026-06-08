@@ -5,6 +5,7 @@ import ChatMessage from '../components/ChatMessage'
 import TypingIndicator from '../components/TypingIndicator'
 import ChatInput from '../components/ChatInput'
 import ModelSelector from '../components/ModelSelector'
+import Footer from '../components/Footer'
 
 export default function ChatPage({ user, onLogout, isAdmin, history, activeConvId, onLoadConversation, onGoHome, onOpenCuradoria, currentView, messages, isTyping, onSend, onNewChat, onRate, onComment, selectedModel, onModelChange }) {
   const bottomRef = useRef(null)
@@ -29,6 +30,7 @@ export default function ChatPage({ user, onLogout, isAdmin, history, activeConvI
           <ModelSelector value={selectedModel} onChange={onModelChange} />
           <ChatInput onSend={onSend} disabled={isTyping} />
         </div>
+        <Footer />
       </main>
     </div>
   )
