@@ -1,3 +1,5 @@
+import { useLanguage } from '../i18n/LanguageContext'
+
 const BotAvatar = () => (
   <div className="chat-message__avatar">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -11,6 +13,8 @@ const BotAvatar = () => (
 )
 
 export default function TypingIndicator() {
+  const { t } = useLanguage()
+
   return (
     <div className="chat-message chat-message--bot">
       <BotAvatar />
@@ -18,6 +22,7 @@ export default function TypingIndicator() {
         <span className="typing-indicator__dot" />
         <span className="typing-indicator__dot" />
         <span className="typing-indicator__dot" />
+        <span className="typing-indicator__text">{t('chat.typing')}</span>
       </div>
     </div>
   )

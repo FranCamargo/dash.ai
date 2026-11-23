@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
 
 export const MODELS = [
+  { id: 'qwen3.5:4b',             label: 'qwen3.5:4b',             provider: 'Ollama',    supportsImages: true },
+  { id: 'lfm3-vl:latest',         label: 'lfm3-vl:latest',         provider: 'Ollama',    supportsImages: true },
   { id: 'claude-opus-4-8',       label: 'Claude Opus 4.8',        provider: 'Anthropic' },
   { id: 'claude-sonnet-4-6',     label: 'Claude Sonnet 4.6',      provider: 'Anthropic' },
   { id: 'gpt-5.1',               label: 'GPT 5.1',                provider: 'OpenAI'    },

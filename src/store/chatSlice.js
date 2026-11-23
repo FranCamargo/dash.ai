@@ -9,6 +9,11 @@ function readStorage(key, fallback) {
   }
 }
 
+function readSelectedModel() {
+  const savedModel = readStorage('chatbot-model', null)
+  return savedModel === 'lfm3-vl:latest' ? savedModel : 'qwen3.5:4b'
+}
+
 const chatSlice = createSlice({
   name: 'chat',
   initialState: {
@@ -17,7 +22,7 @@ const chatSlice = createSlice({
     isTyping: false,
     history: readStorage('chatbot-history', []),
     activeConvId: readStorage('chatbot-active-conv', null),
-    selectedModel: readStorage('chatbot-model', 'claude-sonnet-4-6'),
+    selectedModel: readSelectedModel(),
   },
   reducers: {
     setView(state, action) {

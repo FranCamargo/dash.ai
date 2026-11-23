@@ -1,12 +1,12 @@
 # Assistente — Chatbot Interface
 
-Interface de chatbot com autenticação, histórico de conversas, avaliação de respostas e painel de curadoria com métricas de uso.
+Interface de chatbot para execução local, com histórico de conversas, avaliação de respostas e integração com modelos offline do Ollama.
 
 ---
 
 ## Objetivo
 
-Simular a experiência de um assistente de IA conversacional, permitindo ao usuário interagir via chat com ações rápidas contextualizadas, navegar pelo histórico de conversas e, para administradores, acessar um painel analítico com KPIs de engajamento e assertividade.
+Permitir conversar localmente com modelos de IA, navegar pelo histórico, enviar imagens para análise e, para administradores, acessar um painel analítico com métricas de uso.
 
 ---
 
@@ -24,6 +24,48 @@ Simular a experiência de um assistente de IA conversacional, permitindo ao usu�
 Nenhuma biblioteca de componentes ou ícones externos foi utilizada — todos os ícones são SVGs inline encapsulados como componentes.
 
 ---
+
+## Execução local e modelos offline (Ollama)
+
+O dash.ai pode rodar no próprio computador e conversar com os modelos locais `qwen3.5:4b` e `lfm3-vl:latest`. Depois de baixar os modelos e instalar as dependências, as conversas são processadas pelo Ollama local e não são enviadas a serviços externos.
+
+### Configuração passo a passo
+
+1. Instale o [Node.js](https://nodejs.org/) e o [Ollama](https://ollama.com/download), caso ainda não estejam instalados.
+2. No terminal, entre na pasta do projeto e instale as dependências:
+
+   ```sh
+   npm install
+   ```
+
+3. Baixe os modelos. Esta etapa precisa de internet; depois que o download terminar, o uso dos modelos pode ser offline. Se eles já aparecem em `ollama list`, pule este passo:
+
+   ```sh
+   ollama pull qwen3.5:4b
+   ollama pull lfm3-vl:latest
+   ollama list
+   ```
+
+   No Windows, se `ollama` não for reconhecido como comando, use o caminho padrão do executável:
+
+   ```powershell
+   & "$env:LOCALAPPDATA\Programs\Ollama\ollama.exe" pull qwen3.5:4b
+   & "$env:LOCALAPPDATA\Programs\Ollama\ollama.exe" pull lfm3-vl:latest
+   ```
+
+4. Inicie o dash:
+
+   ```sh
+   npm run dev
+   ```
+
+   O script verifica se a API local do Ollama está ativa. Se não estiver, tenta iniciar `ollama serve` e aguarda até 60 segundos. No Windows, procura `ollama.exe` em `%LOCALAPPDATA%\Programs\Ollama\`; também aceita o comando `ollama` no `PATH`. O Vite encaminha `/ollama` para `http://127.0.0.1:11434`. Abra o endereço local mostrado no terminal (por padrão, `http://localhost:3000`).
+
+5. No seletor de modelos do chat, escolha `qwen3.5:4b` ou `lfm3-vl:latest`. O Qwen é selecionado por padrão; o LFM e o Qwen também aceitam imagens anexadas na conversa. A primeira resposta pode demorar enquanto o modelo é carregado.
+
+Se o executável do Ollama estiver em outro local, defina `OLLAMA_EXECUTABLE` com o caminho completo antes de executar `npm run dev`. Se a API usar outro endereço, defina `VITE_OLLAMA_BASE_URL` com a URL base, por exemplo `http://localhost:11434`.
+
+> **Execução publicada:** a inicialização automática e o proxy local são usados pelo `npm run dev`. Um site estático publicado não pode iniciar processos no computador do visitante; nesse caso, o Ollama precisa ser iniciado separadamente e a origem do site deve ser autorizada pelo Ollama (`OLLAMA_ORIGINS`).
 
 ## Arquitetura
 
@@ -77,7 +119,7 @@ O estado é dividido em dois slices independentes:
 
 ### Separação de responsabilidades
 
-`ChatbotPage` concentra toda a lógica de negócio do chat (salvar histórico, simular resposta do bot, gerenciar navegação entre views) e entrega para as pages apenas props estáveis. As pages e componentes são puramente apresentacionais — não acessam o store diretamente, apenas recebem e chamam callbacks.
+`ChatbotPage` concentra a lógica de negócio do chat, salva o histórico e encaminha mensagens dos modelos Ollama para a API local. As demais opções de modelo mantêm respostas demonstrativas. As pages e componentes recebem e chamam callbacks, sem acessar o store diretamente.
 
 ### Memoização onde ela importa
 

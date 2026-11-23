@@ -14,17 +14,44 @@ const IconClip = () => (
   </svg>
 )
 
-export default function ChatInput({ onSend, disabled }) {
+export default function ChatInput({ onSend, disabled, supportsImages = false }) {
   const { t } = useLanguage()
   const [value, setValue] = useState('')
+  const [selectedImage, setSelectedImage] = useState(null)
+  const [attachmentError, setAttachmentError] = useState('')
   const fileRef = useRef(null)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    if (value.trim() && !disabled) {
-      onSend(value.trim())
-      setValue('')
+    const imageToSend = supportsImages ? selectedImage : null
+    if ((!value.trim() && !imageToSend) || disabled) return
+
+    let images = []
+    if (imageToSend) {
+      try {
+        images = [await readFileAsBase64(imageToSend)]
+      } catch (error) {
+        console.error('Unable to read the selected image:', error)
+        setAttachmentError(`${t('chatInput.imageReadError')} ${error.message}`)
+        return
+      }
     }
+
+    onSend(value.trim() || t('chatInput.imagePrompt'), images, imageToSend?.name)
+    setValue('')
+    setSelectedImage(null)
+    setAttachmentError('')
+  }
+
+  const handleImageChange = (e) => {
+    setSelectedImage(e.target.files?.[0] ?? null)
+    setAttachmentError('')
+    e.target.value = ''
+  }
+
+  const handleRemoveImage = () => {
+    setSelectedImage(null)
+    setAttachmentError('')
   }
 
   const handleKeyDown = (e) => {
@@ -33,7 +60,15 @@ export default function ChatInput({ onSend, disabled }) {
 
   return (
     <form className="chat-input-bar" onSubmit={handleSubmit}>
-      <div className="chat-input-wrapper">
+      <div className={`chat-input-wrapper${selectedImage ? ' chat-input-wrapper--attachment' : ''}`}>
+        {supportsImages && selectedImage && (
+          <div className="chat-input__attachment">
+            <span>{selectedImage.name}</span>
+            <button type="button" onClick={handleRemoveImage} title={t('chatInput.removeImage')}>
+              ×
+            </button>
+          </div>
+        )}
         <textarea
           className="chat-input__field"
           rows={5}
@@ -47,24 +82,53 @@ export default function ChatInput({ onSend, disabled }) {
       </div>
 
       <div className="chat-input__actions">
-        <input ref={fileRef} type="file" style={{ display: 'none' }} />
+        <input
+          ref={fileRef}
+          type="file"
+          accept="image/*"
+          style={{ display: 'none' }}
+          onChange={handleImageChange}
+        />
         <button
           className="chat-input__attach"
           type="button"
           onClick={() => fileRef.current?.click()}
-          title={t('chatInput.attach')}
+          disabled={disabled || !supportsImages}
+          title={supportsImages ? t('chatInput.attach') : t('chatInput.ollamaImagesOnly')}
         >
           <IconClip />
         </button>
         <button
           className="chat-input__send"
           type="submit"
-          disabled={disabled || !value.trim()}
+          disabled={disabled || (!value.trim() && !(supportsImages && selectedImage))}
           title={t('chatInput.send')}
         >
           <IconSend />
         </button>
       </div>
+      {attachmentError && <p className="chat-input__error" role="alert">{attachmentError}</p>}
     </form>
   )
+}
+
+function readFileAsBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onerror = () => reject(new Error('The image file could not be read.'))
+    reader.onload = () => {
+      if (typeof reader.result !== 'string') {
+        reject(new Error('The image file could not be read.'))
+        return
+      }
+
+      const base64 = reader.result.split(',')[1]
+      if (!base64) {
+        reject(new Error('The image file could not be converted.'))
+        return
+      }
+      resolve(base64)
+    }
+    reader.readAsDataURL(file)
+  })
 }

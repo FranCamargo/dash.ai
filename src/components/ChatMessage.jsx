@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useLanguage } from '../i18n/LanguageContext'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 const BotAvatar = () => (
   <div className="chat-message__avatar">
@@ -71,6 +73,7 @@ export default function ChatMessage({ message, onRate, onComment }) {
       <div className="chat-message chat-message--user">
         <div className="chat-message__bubble chat-message__bubble--user">
           {message.content}
+          {message.attachment && <span className="chat-message__attachment">{message.attachment}</span>}
         </div>
       </div>
     )
@@ -81,7 +84,7 @@ export default function ChatMessage({ message, onRate, onComment }) {
       <BotAvatar />
       <div className="chat-message__bot-content">
         <div className="chat-message__bubble chat-message__bubble--bot">
-          {message.content}
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.content}</ReactMarkdown>
         </div>
         <div className="chat-message__rating">
           <button

@@ -12,6 +12,7 @@ import {
   clearChat,
 } from '../store/chatSlice'
 import { MODELS } from '../components/ModelSelector'
+import { sendOllamaMessage } from '../services/ollama'
 import HomePage from './HomePage'
 import ChatPage from './ChatPage'
 import CuradoriaPage from './CuradoriaPage'
@@ -71,30 +72,64 @@ export default function ChatbotPage({ user, onLogout }) {
     ))
   }, [dispatch, history])
 
-  const addBotReply = useCallback((actionId, isFirstMessage) => {
+  const addBotReply = useCallback((actionId, isFirstMessage, conversationMessages, modelId = selectedModel) => {
     dispatch(setIsTyping(true))
-    setTimeout(() => {
-      dispatch(setIsTyping(false))
-      const modelLabel = MODELS.find(m => m.id === selectedModel)?.label ?? 'Claude Sonnet'
-      dispatch(addMessage({ id: Date.now(), role: 'bot', content: getBotResponse(actionId, isFirstMessage, t), model: modelLabel }))
-    }, 1600)
+    const model = MODELS.find(m => m.id === modelId)
+    const modelLabel = model?.label ?? 'Claude Sonnet'
+
+    const respond = async () => {
+      try {
+        let content
+        if (model?.provider === 'Ollama') {
+          content = await sendOllamaMessage(modelId, conversationMessages)
+        } else {
+          await new Promise(resolve => setTimeout(resolve, 1600))
+          content = getBotResponse(actionId, isFirstMessage, t)
+        }
+        dispatch(addMessage({ id: Date.now(), role: 'bot', content, model: modelLabel }))
+      } catch (error) {
+        console.error('Ollama chat request failed:', error)
+        dispatch(addMessage({
+          id: Date.now(),
+          role: 'bot',
+          content: `${t('bot.ollamaError')}\n${error.message}`,
+          model: modelLabel,
+        }))
+      } finally {
+        dispatch(setIsTyping(false))
+      }
+    }
+
+    void respond()
   }, [dispatch, selectedModel, t])
 
   const startChat = useCallback((content, actionId, defaultModel) => {
     if (messages.length > 0) saveToHistory(messages, activeConvId)
     followUpIndex = 0
     const newId = `conv-${Date.now()}`
+    const modelId = defaultModel || selectedModel
     dispatch(setActiveConvId(newId))
-    if (defaultModel) dispatch(setModel(defaultModel))
+    if (defaultModel) dispatch(setModel(modelId))
     dispatch(setMessages([{ id: Date.now(), role: 'user', content }]))
     dispatch(setView('chat'))
-    addBotReply(actionId, true)
-  }, [dispatch, messages, activeConvId, saveToHistory, addBotReply])
+    addBotReply(actionId, true, [{ role: 'user', content }], modelId)
+  }, [dispatch, messages, activeConvId, saveToHistory, addBotReply, selectedModel])
 
-  const handleSend = useCallback((content) => {
-    dispatch(addMessage({ id: Date.now(), role: 'user', content }))
-    addBotReply(null, false)
-  }, [dispatch, addBotReply])
+  const handleSend = useCallback((content, images = [], attachmentName) => {
+    const id = Date.now()
+    const userMessage = {
+      id,
+      role: 'user',
+      content,
+      ...(attachmentName ? { attachment: attachmentName } : {}),
+    }
+    const conversationMessages = [
+      ...messages.map(message => ({ role: message.role, content: message.content })),
+      { role: 'user', content, ...(images.length ? { images } : {}) },
+    ]
+    dispatch(addMessage(userMessage))
+    addBotReply(null, false, conversationMessages, selectedModel)
+  }, [dispatch, addBotReply, messages, selectedModel])
 
   const handleNewChat = useCallback(() => {
     if (messages.length > 0) saveToHistory(messages, activeConvId)

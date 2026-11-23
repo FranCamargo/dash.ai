@@ -4,7 +4,7 @@ import TopBar from '../components/TopBar'
 import ChatMessage from '../components/ChatMessage'
 import TypingIndicator from '../components/TypingIndicator'
 import ChatInput from '../components/ChatInput'
-import ModelSelector from '../components/ModelSelector'
+import ModelSelector, { MODELS } from '../components/ModelSelector'
 import Footer from '../components/Footer'
 
 export default function ChatPage({ user, onLogout, isAdmin, history, activeConvId, onLoadConversation, onGoHome, onOpenCuradoria, currentView, messages, isTyping, onSend, onNewChat, onRate, onComment, selectedModel, onModelChange }) {
@@ -28,7 +28,11 @@ export default function ChatPage({ user, onLogout, isAdmin, history, activeConvI
         </div>
         <div className="chat-input-area">
           <ModelSelector value={selectedModel} onChange={onModelChange} />
-          <ChatInput onSend={onSend} disabled={isTyping} />
+          <ChatInput
+            onSend={onSend}
+            disabled={isTyping}
+            supportsImages={MODELS.find(model => model.id === selectedModel)?.supportsImages}
+          />
         </div>
         <Footer />
       </main>

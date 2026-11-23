@@ -26,9 +26,9 @@ const IconCode = () => (
 )
 
 const ACTION_DEFS = [
-  { id: 'image', icon: <IconImage />, titleKey: 'quickActions.imageTitle', descKey: 'quickActions.imageDesc', defaultModel: 'gemini-2.0-flash' },
-  { id: 'text',  icon: <IconText />,  titleKey: 'quickActions.textTitle',  descKey: 'quickActions.textDesc',  defaultModel: 'gpt-5.1' },
-  { id: 'code',  icon: <IconCode />,  titleKey: 'quickActions.codeTitle',  descKey: 'quickActions.codeDesc',  defaultModel: 'claude-opus-4-8' },
+  { id: 'image', icon: <IconImage />, titleKey: 'quickActions.imageTitle', descKey: 'quickActions.imageDesc', defaultModel: 'lfm3-vl:latest' },
+  { id: 'text',  icon: <IconText />,  titleKey: 'quickActions.textTitle',  descKey: 'quickActions.textDesc',  defaultModel: 'qwen3.5:4b' },
+  { id: 'code',  icon: <IconCode />,  titleKey: 'quickActions.codeTitle',  descKey: 'quickActions.codeDesc',  defaultModel: 'qwen3.5:4b' },
 ]
 
 export default function QuickActions({ onActionSelect }) {
